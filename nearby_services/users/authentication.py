@@ -1,3 +1,7 @@
+__author__ = "Megha Shinde"
+__date__ = "16-02-2026"
+__lastupdatedby__ = "Megha Shinde"
+__lastupdateddate__ = "18-02-2026"
 # users/authentication.py
 
 from rest_framework_simplejwt.authentication import JWTAuthentication

@@ -1,3 +1,8 @@
+__author__ = "Megha Shinde"
+__date__ = "16-02-2026"
+__lastupdatedby__ = "Megha Shinde"
+__lastupdateddate__ = "18-02-2026"
+
 from django.contrib.auth.models import AbstractUser
 from django.contrib.gis.db import models
 

@@ -1,3 +1,8 @@
+__author__ = "Megha Shinde"
+__date__ = "16-02-2026"
+__lastupdatedby__ = "Megha Shinde"
+__lastupdateddate__ = "16-02-2026"
+
 from rest_framework import serializers
 from .models import User, Service
 from django.contrib.gis.geos import Point

@@ -1,3 +1,8 @@
+__author__ = "Megha Shinde"
+__date__ = "16-02-2026"
+__lastupdatedby__ = "Megha Shinde"
+__lastupdateddate__ = "17-02-2026"
+
 from rest_framework.throttling import SimpleRateThrottle
 
 

@@ -1,0 +1,11 @@
+Django==4.2
+djangorestframework
+psycopg2-binary
+djangorestframework-simplejwt
+django-redis
+django-cors-headers
+gunicorn
+djangorestframework
+djangorestframework-simplejwt
+
+

@@ -1,0 +1,31 @@
+services:
+  django_app:
+    build: .
+    container_name: django_app
+    volumes:
+      - ./nearby_services:/app
+    ports:
+      - "8001:8000"
+    depends_on:
+      - db
+      - redis_cache
+
+  redis_cache:
+    image: redis:7
+    container_name: redis_cache
+    restart: always
+
+  db:
+    image: postgis/postgis:15-3.3
+    container_name: postgis_db
+    environment:
+      POSTGRES_DB: nearby
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:

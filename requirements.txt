@@ -9,5 +9,3 @@ djangorestframework
 djangorestframework-simplejwt
 dj-database-url
 
-
-

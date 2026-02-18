@@ -1,9 +1,10 @@
 #!/bin/sh
 
 echo "Waiting for database..."
+DB_HOST=${POSTGRES_HOST:-db}  # fallback to 'db' if variable is not set
 
 # Wait until Postgres is ready
-while ! nc -z db 5432; do
+while ! nc -z $DB_HOST 5432; do
   sleep 1
 done
 

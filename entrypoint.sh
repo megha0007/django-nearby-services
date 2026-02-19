@@ -16,13 +16,34 @@ if [ -z "$RENDER" ]; then
     echo "Database started"
 fi
 
-echo "Running migrations..."
 python manage.py migrate --noinput
 
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
 
-# ... (rest of your admin user logic)
+echo "Ensuring default admin user exists..."
+
+python manage.py shell << END
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
+email = "admin@example.com"
+username = "admin"
+password = "admin123"
+
+if not User.objects.filter(email=email).exists():
+    User.objects.create_superuser(
+        email=email,
+        username=username,
+        password=password,
+        role="admin"
+    )
+    print("Admin user created.")
+else:
+    print("Admin user already exists.")
+END
+
 
 echo "Starting Gunicorn..."
 exec gunicorn config.wsgi:application --bind 0.0.0.0:8000

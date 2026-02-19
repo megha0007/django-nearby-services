@@ -22,7 +22,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-a_h4#!g^ob07z(($mh*ocgvczj&d4_im5w!jmqd^*hgi$f*j0)'
+# SECRET_KEY = 'django-insecure-a_h4#!g^ob07z(($mh*ocgvczj&d4_im5w!jmqd^*hgi$f*j0)'
+
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ.get('SECRET_KEY', 'django-insecure-default-key-for-local-dev')
+
+# SECURITY WARNING: don't run with debug turned on in production!
+# This automatically sets DEBUG to False on Render but keeps it True locally.
+DEBUG = 'RENDER' not in os.environ
+
+
+
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -78,16 +88,23 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.contrib.gis.db.backends.postgis',
+#         'NAME': 'nearby',
+#         'USER': 'postgres',
+#         'PASSWORD': 'postgres',
+#         'HOST': 'db',
+#         'PORT': '5432',
+#     }
+# }
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'nearby',
-        'USER': 'postgres',
-        'PASSWORD': 'postgres',
-        'HOST': 'db',
-        'PORT': '5432',
-    }
+    "default": dj_database_url.config(
+        default=os.environ.get("DATABASE_URL"),
+        engine="django.contrib.gis.db.backends.postgis"
+    )
 }
+
 
 # DATABASES = {
 #     'default': {
@@ -164,12 +181,28 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),
 }
+# CACHES = {
+#     "default": {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": "redis://redis_cache:6379/1",
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+#         }
+#     }
+# }
+REDIS_URL = os.environ.get("REDIS_URL", "redis://redis_cache:6379/1")
+
 CACHES = {
     "default": {
         "BACKEND": "django_redis.cache.RedisCache",
-        "LOCATION": "redis://redis_cache:6379/1",
+        "LOCATION": REDIS_URL,
         "OPTIONS": {
             "CLIENT_CLASS": "django_redis.client.DefaultClient",
+            # Connection pooling is highly recommended for production
+            "CONNECTION_POOL_KWARGS": {
+                "max_connections": 20,
+                "retry_on_timeout": True,
+            }
         }
     }
 }

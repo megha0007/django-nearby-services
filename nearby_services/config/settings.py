@@ -154,6 +154,15 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Add this line:
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# Also add this for better handling of local static files
+STATICFILES_DIRS = [
+    # Ensure this points to where your app's CSS/JS actually lives
+    # BASE_DIR / "static", 
+]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 

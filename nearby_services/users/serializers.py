@@ -33,18 +33,23 @@ class UserListSerializer(serializers.ModelSerializer):
 class ServiceSerializer(serializers.ModelSerializer):
     latitude = serializers.FloatField(write_only=True)
     longitude = serializers.FloatField(write_only=True)
+# Use these for output (GET)
+    lat = serializers.SerializerMethodField()
+    lng = serializers.SerializerMethodField()
 
     class Meta:
         model = Service
         fields = [
-            'id',
-            'name',
-            'category',
-            'rating',
-            'metadata',
-            'latitude',
-            'longitude'
+            'id', 'name', 'category', 'rating', 'metadata', 
+            'lat', 'lng', 'latitude', 'longitude'
         ]
+
+    # These methods extract the coordinates from the PointField
+    def get_lat(self, obj):
+        return obj.location.y if obj.location else None
+
+    def get_lng(self, obj):
+        return obj.location.x if obj.location else None
 
     def create(self, validated_data):
         lat = validated_data.pop('latitude')
